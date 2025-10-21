@@ -19,6 +19,10 @@ dependencyResolutionManagement {
     }
 }
 
+<<<<<<< HEAD
 rootProject.name = "calcul"
+=======
+rootProject.name = "My Application"
+>>>>>>> 38eabea (Initial commit with UI changes)
 include(":app")
  

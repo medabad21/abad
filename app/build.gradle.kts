@@ -3,11 +3,19 @@ plugins {
 }
 
 android {
+<<<<<<< HEAD
     namespace = "com.example.calcul"
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.calcul"
+=======
+    namespace = "com.example.myapplication"
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = "com.example.myapplication"
+>>>>>>> 38eabea (Initial commit with UI changes)
         minSdk = 31
         targetSdk = 36
         versionCode = 1
