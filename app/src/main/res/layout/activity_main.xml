@@ -1,426 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- Header -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monthly Savings Tracker"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"/>
-
-        <!-- Monthly Income -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monthly Income"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <EditText
-            android:id="@+id/etMonthlyIncome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your monthly income"
-            android:inputType="numberDecimal"/>
-
-        <!-- Category Selection -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Expense Category"
-            android:textSize="16sp"
-            android:layout_marginTop="20dp"/>
-
-        <Spinner
-            android:id="@+id/spinnerCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/expense_categories"/>
-
-        <!-- Amount -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Amount Spent"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <EditText
-            android:id="@+id/etAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter amount"
-            android:inputType="numberDecimal"/>
-
-        <!-- Description -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description (Optional)"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <EditText
-            android:id="@+id/etDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="e.g., Fuel, groceries, lunch"/>
-
-        <!-- Add Expense Button -->
-        <Button
-            android:id="@+id/btnAddExpense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Expense"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#4CAF50"/>
-
-        <!-- Calculate Savings Button -->
-        <Button
-            android:id="@+id/btnCalculate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Calculate Monthly Savings"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#2196F3"/>
-
-        <!-- Results Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="30dp"
-            android:padding="15dp"
-            android:background="#E8F5E9">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Monthly Summary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="10dp"/>
-
-            <TextView
-                android:id="@+id/tvFoodExpense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Food: 0.00 MAD"
-                android:textSize="14sp"/>
-
-            <TextView
-                android:id="@+id/tvTravelExpense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Motorcycle Travel: 0.00 MAD"
-                android:textSize="14sp"
-                android:layout_marginTop="5dp"/>
-
-            <TextView
-                android:id="@+id/tvTotalExpense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Total Expenses: 0.00 MAD"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"/>
-
-            <TextView
-                android:id="@+id/tvSavings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Monthly Savings: 0.00 MAD"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#4CAF50"
-                android:layout_marginTop="10dp"/>
-
-            <TextView
-                android:id="@+id/tvCapital"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Yearly Capital: 0.00 MAD"
-                android:textSize="16sp"
-                android:textColor="#1976D2"
-                android:layout_marginTop="5dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
-=======
-<!--
-  Modern, clean Material-styled layout for an Expense Tracker.
-  Copy to: res/layout/activity_main.xml
-  Requires: Material Components theme (Theme.MaterialComponents.DayNight.*) in styles.xml
--->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:backgroundTint="?attr/colorPrimary"
-        android:title="Expense Tracker"
-        android:titleTextColor="?attr/colorOnPrimary"
-        app:navigationIcon="@drawable/ic_menu"
-        app:layout_scrollFlags="scroll|enterAlways" />
+        android:theme="@style/Theme.MyApplication.AppBarOverlay">
 
-    <ScrollView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Monthly Overview"
+            app:popupTheme="@style/Theme.MyApplication.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
-        android:padding="16dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <!-- Income input card -->
+            <!-- Summary Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Monthly income">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etMonthlyIncome"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:imeOptions="actionDone" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnSaveIncome"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Save Income"
-                        app:iconPadding="8dp" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Add expense card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvIncomeLabel"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add Expense"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:paddingBottom="8dp" />
+                        android:text="Monthly Income"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <Spinner
-                        android:id="@+id/spinnerCategory"
-                        android:layout_width="match_parent"
+                    <ImageButton
+                        android:id="@+id/btnEditIncome"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:prompt="@string/select_category"
-                        />
+                        android:src="@drawable/ic_edit"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Edit Income"
+                        android:layout_marginStart="8dp"
+                        app:tint="?attr/colorOnSurface"
+                        app:layout_constraintStart_toEndOf="@+id/tvIncomeLabel"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvIncomeLabel"
+                        app:layout_constraintTop_toTopOf="@+id/tvIncomeLabel"/>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvIncome"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Amount"
-                        android:layout_marginTop="8dp">
+                        android:layout_marginTop="8dp"
+                        android:text="0.00 MAD"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvIncomeLabel"/>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etAmount"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvTotalExpense"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Description"
-                        android:layout_marginTop="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDescription"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapSentences" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnAddExpense"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Add Expense" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnViewExpenses"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="8dp"
-                            android:text="View Expenses"
-                            app:iconGravity="textStart" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Summary cards -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginEnd="8dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvIncome"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Monthly Income: 0 MAD"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="2dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="12dp">
-
-                        <TextView
-                            android:id="@+id/tvTotalExpense"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Total Spent: 0 MAD"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="2dp"
-                android:layout_marginTop="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                        android:layout_marginTop="4dp"
+                        android:text="Expenses: 0.00 MAD"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvIncome" />
 
                     <TextView
                         android:id="@+id/tvRemaining"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Remaining: 0 MAD"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="8dp"
+                        android:text="Remaining: 0.00 MAD"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTotalExpense" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Optional: divider and expenses preview -->
+            <!-- Recent Expenses -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Recent expenses"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"
-                android:paddingBottom="6dp" />
+                android:layout_marginTop="24dp"
+                android:text="Recent Transactions"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvExpenses"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:overScrollMode="never" />
-
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:nestedScrollingEnabled="false" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/secondary"
+        app:tint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
->>>>>>> 38eabea (Initial commit with UI changes)

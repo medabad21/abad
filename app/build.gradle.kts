@@ -3,19 +3,11 @@ plugins {
 }
 
 android {
-<<<<<<< HEAD
     namespace = "com.example.calcul"
     compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.calcul"
-=======
-    namespace = "com.example.myapplication"
-    compileSdk = 36
-
-    defaultConfig {
-        applicationId = "com.example.myapplication"
->>>>>>> 38eabea (Initial commit with UI changes)
         minSdk = 31
         targetSdk = 36
         versionCode = 1
@@ -33,6 +25,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -40,7 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

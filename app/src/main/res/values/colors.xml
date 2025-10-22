@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<<<<<<< HEAD
-=======
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
->>>>>>> 38eabea (Initial commit with UI changes)
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Color Palette -->
+    <color name="primary">#1976D2</color>
+    <color name="primary_dark">#004BA0</color>
+    <color name="primary_light">#63A4FF</color>
+
+    <!-- Secondary Color Palette -->
+    <color name="secondary">#FFC107</color>
+    <color name="secondary_dark">#C79100</color>
+    <color name="secondary_light">#FFF350</color>
+
+    <!-- Standard Colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Surface & Background -->
+    <color name="surface">#FFFFFF</color>
+    <color name="background">#F5F5F5</color>
+
+    <!-- Error & Status Colors -->
+    <color name="error">#D32F2F</color>
+    <color name="success">#388E3C</color>
+
 </resources>

@@ -1,102 +1,186 @@
 package com.example.calcul;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText etMonthlyIncome, etAmount, etDescription;
-    private Spinner spinnerCategory;
-    private Button btnAddExpense, btnCalculate;
-    private TextView tvFoodExpense, tvTravelExpense, tvTotalExpense, tvSavings, tvCapital;
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String MONTHLY_INCOME = "monthlyIncome";
+
+    private TextView tvIncome, tvTotalExpense, tvRemaining;
+    private RecyclerView rvExpenses;
+    private ImageButton btnEditIncome;
 
     private DatabaseHelper dbHelper;
     private double monthlyIncome = 0;
+    private ExpenseAdapter adapter;
+    private List<Expense> expenseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         dbHelper = new DatabaseHelper(this);
 
-        etMonthlyIncome = findViewById(R.id.etMonthlyIncome);
-        etAmount = findViewById(R.id.etAmount);
-        etDescription = findViewById(R.id.etDescription);
-        spinnerCategory = findViewById(R.id.spinnerCategory);
-        btnAddExpense = findViewById(R.id.btnAddExpense);
-        btnCalculate = findViewById(R.id.btnCalculate);
-        tvFoodExpense = findViewById(R.id.tvFoodExpense);
-        tvTravelExpense = findViewById(R.id.tvTravelExpense);
+        tvIncome = findViewById(R.id.tvIncome);
         tvTotalExpense = findViewById(R.id.tvTotalExpense);
-        tvSavings = findViewById(R.id.tvSavings);
-        tvCapital = findViewById(R.id.tvCapital);
+        tvRemaining = findViewById(R.id.tvRemaining);
+        rvExpenses = findViewById(R.id.rvExpenses);
+        btnEditIncome = findViewById(R.id.btnEditIncome);
 
-        btnAddExpense.setOnClickListener(v -> addExpense());
-        btnCalculate.setOnClickListener(v -> calculateSavings());
+        FloatingActionButton fab = findViewById(R.id.fabAddExpense);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, EditExpenseActivity.class);
+            startActivity(intent);
+        });
+
+        btnEditIncome.setOnClickListener(v -> showSetIncomeDialog());
+
+        loadIncome();
+        updateSummary();
+        setupRecyclerView();
     }
 
-    private void addExpense() {
-        String category = spinnerCategory.getSelectedItem().toString();
-        String amountStr = etAmount.getText().toString();
-        String description = etDescription.getText().toString();
+    private void setupRecyclerView() {
+        expenseList = dbHelper.getAllExpenses();
+        adapter = new ExpenseAdapter(expenseList, new ExpenseAdapter.OnItemClickListener() {
+            @Override
+            public void onEditClick(int position) {
+                Intent intent = new Intent(MainActivity.this, EditExpenseActivity.class);
+                intent.putExtra("expense_id", expenseList.get(position).getId());
+                startActivity(intent);
+            }
 
-        if (amountStr.isEmpty()) {
-            Toast.makeText(this, "Please enter an amount", Toast.LENGTH_SHORT).show();
-            return;
-        }
+            @Override
+            public void onDeleteClick(int position) {
+                dbHelper.deleteExpense(expenseList.get(position).getId());
+                updateSummary();
+                setupRecyclerView();
+            }
 
-        double amount = Double.parseDouble(amountStr);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String currentDate = sdf.format(new Date());
-
-        boolean success = dbHelper.addExpense(category, amount, currentDate, description);
-
-        if (success) {
-            Toast.makeText(this, "Expense added successfully!", Toast.LENGTH_SHORT).show();
-            etAmount.setText("");
-            etDescription.setText("");
-        } else {
-            Toast.makeText(this, "Failed to add expense", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            public void onItemClick(int position) {
+                showExpenseDetailsDialog(expenseList.get(position));
+            }
+        });
+        rvExpenses.setLayoutManager(new LinearLayoutManager(this));
+        rvExpenses.setAdapter(adapter);
     }
 
-    private void calculateSavings() {
-        String incomeStr = etMonthlyIncome.getText().toString();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateSummary();
+        setupRecyclerView();
+    }
 
-        if (incomeStr.isEmpty()) {
-            Toast.makeText(this, "Please enter your monthly income", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void loadIncome() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        monthlyIncome = sharedPreferences.getFloat(MONTHLY_INCOME, 0);
+    }
 
-        monthlyIncome = Double.parseDouble(incomeStr);
+    private void saveIncome(double income) {
+        monthlyIncome = income;
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(MONTHLY_INCOME, (float) monthlyIncome);
+        editor.apply();
+        updateSummary();
+        Toast.makeText(this, "Income saved!", Toast.LENGTH_SHORT).show();
+    }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
-        String currentMonth = sdf.format(new Date());
+    private void updateSummary() {
+        String currentMonth = new SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(new Date());
+        double totalExpense = dbHelper.getAllExpenses().stream()
+                .filter(exp -> exp.getDate().startsWith(currentMonth))
+                .mapToDouble(Expense::getAmount)
+                .sum();
+        double remaining = monthlyIncome - totalExpense;
 
-        double foodExpense = dbHelper.getMonthlyExpenseByCategory("Food", currentMonth);
-        double travelExpense = dbHelper.getMonthlyExpenseByCategory("Motorcycle Travel", currentMonth);
-        double totalExpense = dbHelper.getTotalMonthlyExpense(currentMonth);
+        tvIncome.setText(String.format("%.2f MAD", monthlyIncome));
+        tvTotalExpense.setText(String.format("Expenses: %.2f MAD", totalExpense));
+        tvRemaining.setText(String.format("Remaining: %.2f MAD", remaining));
+    }
 
-        double monthlySavings = monthlyIncome - totalExpense;
-        double yearlyCapital = monthlySavings * 12;
+    private void showSetIncomeDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_set_income, null);
+        final TextInputEditText input = dialogView.findViewById(R.id.etIncomeInput);
 
-        tvFoodExpense.setText(String.format("Food: %.2f MAD", foodExpense));
-        tvTravelExpense.setText(String.format("Motorcycle Travel: %.2f MAD", travelExpense));
-        tvTotalExpense.setText(String.format("Total Expenses: %.2f MAD", totalExpense));
-        tvSavings.setText(String.format("Monthly Savings: %.2f MAD", monthlySavings));
-        tvCapital.setText(String.format("Yearly Capital: %.2f MAD", yearlyCapital));
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Set Monthly Income")
+                .setView(dialogView)
+                .setPositiveButton("Save", null) // We override the listener
+                .setNegativeButton("Cancel", (d, which) -> d.cancel())
+                .create();
 
-        if (monthlySavings > 0) {
-            Toast.makeText(this, "Great! You're saving money!", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Warning: You're spending more than you earn!", Toast.LENGTH_LONG).show();
-        }
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setTextColor(ContextCompat.getColor(this, R.color.primary));
+            button.setOnClickListener(view -> {
+                String incomeStr = input.getText().toString();
+                if (incomeStr != null && !incomeStr.isEmpty()) {
+                    try {
+                        saveIncome(Double.parseDouble(incomeStr));
+                        dialog.dismiss();
+                    } catch (NumberFormatException e) {
+                        input.setError("Invalid number format");
+                    }
+                } else {
+                    input.setError("Please enter income");
+                }
+            });
+        });
+
+        dialog.show();
+    }
+
+    private void showExpenseDetailsDialog(Expense expense) {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_expense_details, null);
+
+        TextView tvDetailCategory = dialogView.findViewById(R.id.tvDetailCategory);
+        TextView tvDetailAmount = dialogView.findViewById(R.id.tvDetailAmount);
+        TextView tvDetailDate = dialogView.findViewById(R.id.tvDetailDate);
+        TextView tvDetailDescription = dialogView.findViewById(R.id.tvDetailDescription);
+
+        tvDetailCategory.setText("Category: " + expense.getCategory());
+        tvDetailAmount.setText("Amount: " + String.format("%.2f MAD", expense.getAmount()));
+        tvDetailDate.setText("Date: " + expense.getDate());
+        tvDetailDescription.setText("Description: " + expense.getDescription());
+
+        new AlertDialog.Builder(this)
+                .setTitle("Expense Details")
+                .setView(dialogView)
+                .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

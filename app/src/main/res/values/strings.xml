@@ -1,25 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-<<<<<<< HEAD
-    <string name="app_name">Monthly Savings Tracker</string>
-
-    <string-array name="expense_categories">
-        <item>Food</item>
-        <item>Motorcycle Travel</item>
-        <item>Entertainment</item>
-        <item>Utilities</item>
-        <item>Shopping</item>
-        <item>Other</item>
-=======
     <string name="app_name">MyExpenseApp</string>
     <string name="select_category">Select category</string>
-
-    <string-array name="categories_array">
-        <item>Food</item>
-        <item>Transport</item>
-        <item>Entertainment</item>
-        <item>Utilities</item>
-        <item>Other</item>
-
->>>>>>> 38eabea (Initial commit with UI changes)
-    </string-array>
 </resources>
